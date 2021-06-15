@@ -14,10 +14,10 @@ You get 2 points if answered correct on the third try.
 You get no points if you answered wrong 3 times.
 
 In this quiz we have a number of questions about our group,
-on a scale from 0-40 keep score of your knowledge of the people surrounding you.
-if your score is - 0-10 :: You are still strangers!
-if your score is - 11 - 20 :: You know a thing or two!
-if your score is - 21 - 35 :: You are basically friends (but not close friends)!
-if your score is - 36 - 40 :: You are a family!
+On a scale from 0-40 keep score of your knowledge of the people surrounding you.
+If your score is - 0-10 :: You are still strangers!
+If your score is - 11 - 20 :: You know a thing or two!
+If your score is - 21 - 35 :: You are basically friends (but not close friends)!
+If your score is - 36 - 40 :: You are a family!
 
 Good Luck!!!
