@@ -1,5 +1,5 @@
 function ifTrue(x,y) {
-    y ? x:x
+   return y ? ul.append(x)
 }
 
 const data = [
@@ -35,3 +35,7 @@ for (let i = 0; i < data[num].answers.length; i++) {
     li.innerText = theAns
     ul.append(li)
 }
+
+document.getElementById('true').addEventListener('click', () => {
+
+})
