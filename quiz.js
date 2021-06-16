@@ -1,6 +1,6 @@
 /* array of questions */
 const myQuestions = [{
-    question: "Webahead has started with kav mashve at:",
+    question: " Question 1 : Webahead has started with kav mashve at:",
     answers: {
         a: "Haifa in 2016",
         b: "Nazareth in 2017",
@@ -103,7 +103,7 @@ const myQuestions = [{
 
 /** global variables */
 let countPoints = 0;
-let numOfTries = 0;
+let failed = 0;
 let currentQuestionIndex = 0;
 const ANSWER_STATUS = {
     CORRECT: 1,
@@ -115,13 +115,19 @@ function startGame() {
     
     // te2apes numOfTries
     const div = document.getElementById("questions");
+    const mainDiv = document.getElementById("main");
+    mainDiv.classList.add("container");
     clearPreviousData();
+
+    /** loop through the array */
     for (let i = 0; i < myQuestions.length; i++) {
         if (currentQuestionIndex == i) {
             const p = document.createElement("p");
             p.textContent = myQuestions[i].question;
-
+            
+            /** create the ul and the li elements with all children */
             const ul = document.createElement("ul");
+            ul.classList.add("answer");
             for (const key in myQuestions[i].answers) {
                 const li = document.createElement("li");
                 const input = document.createElement("input");
@@ -130,6 +136,7 @@ function startGame() {
                 input.value = myQuestions[i].answers[key];
                 li.appendChild(input);
                 const span = document.createElement("span");
+                span.classList.add("styleSpan");
                 span.textContent = myQuestions[i].answers[key];
                 li.appendChild(span);
                 ul.appendChild(li);
@@ -145,14 +152,47 @@ function startGame() {
                 if(status === ANSWER_STATUS.NO_ANSWER){
                     // please choose an answer
                     alert.textContent = "Please Choose An Answer !!!";
+                    setTimeout( () => {
+                        alert.textContent = "";
+                    }, 1000);
                 }   
                 else if(status === ANSWER_STATUS.CORRECT){
-                    currentQuestionIndex++;
-                    startGame();
+                    alert.textContent = "CORRECT :)";
+                    setTimeout( ()=>{
+                        currentQuestionIndex++;
+                        startGame();
+                        alert.textContent = "";
+                    }, 1000); 
                 }
                 else{
                     // try again
                     alert.textContent = "Try Again !!!";
+                    failed++;
+                    setTimeout( () => {
+                        alert.textContent = "";
+                    },1000);
+                }
+                if(failed === 1){
+                    countPoints += 3;
+                } else if(failed === 2){
+                    countPoints += 2;
+                }
+                else if(failed === 3) {
+                    countPoints +=0;
+                    setTimeout( ()=>{
+                        currentQuestionIndex++;
+                        alert.textContent = myQuestions[i].answers[myQuestions[i].correctAnswer];
+                        startGame();
+                    }, 7000);
+
+                }
+                else{ // correct in one try || empty choice 
+                    if(status === ANSWER_STATUS.CORRECT){
+                        countPoints += 4;
+                    }
+                    else{
+                        countPoints +=0;
+                    }
                 }
             }
             div.appendChild(p);
@@ -189,7 +229,6 @@ function getAnswerStatus(i,corrAnswer){
 // 1) when currentQuestionIndex = myQuestions.length => show result
 // 2) when incorrect - decrease one point
 // 3) after the third try if failed - move to the next question and you got 0 points.
-// 4) style the page.
 
 /** IMPORTANT */
 // - when the answer is correct add points based on num of tries: 4 - numOfTires => numOfTries = 0; 
