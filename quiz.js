@@ -102,21 +102,23 @@ const myQuestions = [{
 ];
 
 /** global variables */
-let countPoints = 0;
+let countPoints = 4;
+let totalPoints = 0;
 let failed = 0;
 let currentQuestionIndex = 0;
 const ANSWER_STATUS = {
     CORRECT: 1,
-    INCORRECT:2,
-    NO_ANSWER:3
+    INCORRECT: 2,
+    NO_ANSWER: 3
 }
 
 function startGame() {
-    
-    // te2apes numOfTries
+
+
     const div = document.getElementById("questions");
     const mainDiv = document.getElementById("main");
     mainDiv.classList.add("container");
+    let points = document.getElementById("points");
     clearPreviousData();
 
     /** loop through the array */
@@ -124,7 +126,7 @@ function startGame() {
         if (currentQuestionIndex == i) {
             const p = document.createElement("p");
             p.textContent = myQuestions[i].question;
-            
+
             /** create the ul and the li elements with all children */
             const ul = document.createElement("ul");
             ul.classList.add("answer");
@@ -141,60 +143,73 @@ function startGame() {
                 li.appendChild(span);
                 ul.appendChild(li);
             }
-            
+
             let submit = document.createElement("button");
             submit.textContent = "SUBMIT";
-            submit.onclick = () =>{
+            submit.onclick = () => {
                 let alert = document.getElementById("alert");
                 alert.textContent = "";
                 let corrAnswer = myQuestions[i].answers[myQuestions[i].correctAnswer];
-                let status = getAnswerStatus(i,corrAnswer);
-                if(status === ANSWER_STATUS.NO_ANSWER){
+                let status = getAnswerStatus(i, corrAnswer);
+
+                if (status === ANSWER_STATUS.NO_ANSWER) {
                     // please choose an answer
                     alert.textContent = "Please Choose An Answer !!!";
-                    setTimeout( () => {
+                    setTimeout(() => {
                         alert.textContent = "";
                     }, 1000);
-                }   
-                else if(status === ANSWER_STATUS.CORRECT){
-                    alert.textContent = "CORRECT :)";
-                    setTimeout( ()=>{
-                        currentQuestionIndex++;
-                        startGame();
-                        alert.textContent = "";
-                    }, 1000); 
                 }
-                else{
-                    // try again
-                    alert.textContent = "Try Again !!!";
-                    failed++;
-                    setTimeout( () => {
-                        alert.textContent = "";
-                    },1000);
-                }
-                if(failed === 1){
-                    countPoints += 3;
-                } else if(failed === 2){
-                    countPoints += 2;
-                }
-                else if(failed === 3) {
-                    countPoints +=0;
-                    setTimeout( ()=>{
-                        currentQuestionIndex++;
-                        alert.textContent = myQuestions[i].answers[myQuestions[i].correctAnswer];
-                        startGame();
-                    }, 7000);
+                else if (status === ANSWER_STATUS.CORRECT) {
 
+                    totalPoints += countPoints;
+                    points.textContent = totalPoints;
+                    alert.textContent = "CORRECT :)";
+                    setTimeout(() => {
+                        currentQuestionIndex++;
+                        startGame();
+                        failed = 0;
+                        countPoints = 4;
+                        alert.textContent = "";
+                    }, 1000);
                 }
-                else{ // correct in one try || empty choice 
-                    if(status === ANSWER_STATUS.CORRECT){
-                        countPoints += 4;
-                    }
-                    else{
-                        countPoints +=0;
+                else {
+                    // try again
+                    failed++;
+                    if (failed === 3) {
+                        alert.textContent = " The Correct Answer is : " + myQuestions[i].answers[myQuestions[i].correctAnswer];
+                        totalPoints += countPoints;
+                        points.textContent = totalPoints;
+                        
+                        setTimeout(() => {
+                            currentQuestionIndex++;
+                            alert.textContent = " ";
+                            startGame();
+                            failed = 0;
+                            countPoints = 4;
+                        }, 3000);
+                    } else {
+                        alert.textContent = "Try Again !!!";
+                        setTimeout(() => {
+                            alert.textContent = "";
+                        }, 1000);
                     }
                 }
+
+                // if (failed === 1) {
+                //     countPoints += 3;
+                // } else if (failed === 2) {
+                //     countPoints += 2;
+                // }
+                // else { // correct in one try || empty choice 
+                //     if (status === ANSWER_STATUS.CORRECT) {
+                //         countPoints += 4;
+                //     }
+                //     else {
+                //         countPoints += 0;
+                //     }
+                // }
             }
+            /** append all to the dev container */
             div.appendChild(p);
             div.appendChild(ul);
             div.appendChild(submit);
@@ -203,21 +218,26 @@ function startGame() {
 
 }
 
-function clearPreviousData(){
+function clearPreviousData() {
     const div = document.getElementById("questions");
-    while(div.firstChild){
+    while (div.firstChild) {
         div.removeChild(div.firstChild);
     }
 }
 
-function getAnswerStatus(i,corrAnswer){
+function getAnswerStatus(i, corrAnswer) {
     let a = document.getElementsByName(i);
-    for(let j=0; j<a.length; j++){
-        if(a[j].checked){
-            if(a[j].value === corrAnswer){
+    for (let j = 0; j < a.length; j++) {
+        if (a[j].checked) {
+            if (a[j].value === corrAnswer) {
+                countPoints -= 0;
                 return ANSWER_STATUS.CORRECT;
             }
-            else{
+            else {
+                countPoints--;
+                if(countPoints < 2){
+                    countPoints = 0;
+                }
                 return ANSWER_STATUS.INCORRECT;
             }
         }
