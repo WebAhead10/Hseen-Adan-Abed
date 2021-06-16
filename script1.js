@@ -24,6 +24,7 @@ const data = [
      {question: "Noor is from",
      answers: [["Sakhnin", true], "no", "no", "no"]}
 ]
+
 let num = Math.floor(Math.random() * 10)
 let questionPick = document.getElementById('question').innerText = data[num].question;
 let answerPick =  data[num].answers;
