@@ -1,5 +1,15 @@
+/** global variables */
+let countPoints = 4;
+var totalPoints = 0;
+let failed = 0;
+let currentQuestionIndex = 0;
+const ANSWER_STATUS = {
+    CORRECT: 1,
+    INCORRECT: 2,
+    NO_ANSWER: 3
+}
 // Array of questions
-const myQuestions = [{
+let myQuestions = [{
     question: " Question 1 : Webahead has started with kav mashve at:",
     answers: {
         a: "Haifa in 2016",
@@ -72,7 +82,7 @@ const myQuestions = [{
 {
     question: "Elias is from?",
     answers: {
-        a: "Jdaide Maker",
+        a: "Jdaidet El-Maker",
         b: "Haifaa",
         c: "Jaffa",
         d: "Jerusalem"
@@ -98,19 +108,12 @@ const myQuestions = [{
         d: "Jatt"
     },
     correctAnswer: "b"
+},
+{
+    question: "",
+    
 }
 ];
-
-/** global variables */
-let countPoints = 4;
-let totalPoints = 0;
-let failed = 0;
-let currentQuestionIndex = 0;
-const ANSWER_STATUS = {
-    CORRECT: 1,
-    INCORRECT: 2,
-    NO_ANSWER: 3
-}
 
 function startGame() {
 
@@ -119,10 +122,14 @@ function startGame() {
     mainDiv.classList.add("container");
     let points = document.getElementById("points");
     clearPreviousData();
+    document.getElementById('startBtn').style.display= "none";
 
     // loop through the array of questions and answers(object)
     for (let i = 0; i < myQuestions.length; i++) {
         if (currentQuestionIndex == i) {
+            if (currentQuestionIndex === myQuestions.length - 1) {
+              myQuestions[10].question = `Your score is ${totalPoints}\n${feedback(totalPoints)}`
+            }
             const p = document.createElement("p");
             p.textContent = myQuestions[i].question;
 
@@ -152,10 +159,11 @@ function startGame() {
                 alert.textContent = "";
                 let corrAnswer = myQuestions[i].answers[myQuestions[i].correctAnswer];
                 let status = getAnswerStatus(i, corrAnswer);
+                // if (corrAnswer)
 
                 // please choose an answer
                 if (status === ANSWER_STATUS.NO_ANSWER) {
-                    alert.textContent = "Please Choose An Answer !!!";
+                    alert.textContent = "Please choose an answer";
                     setTimeout(() => {
                         alert.textContent = "";
                     }, 1000);
@@ -177,7 +185,7 @@ function startGame() {
                     // try again
                     failed++;
                     if (failed === 3) {
-                        alert.textContent = " The Correct Answer is : " + myQuestions[i].answers[myQuestions[i].correctAnswer];
+                        alert.textContent = " The correct answer is : " + myQuestions[i].answers[myQuestions[i].correctAnswer];
                         totalPoints += countPoints;
                         points.textContent = totalPoints;
                         
@@ -189,7 +197,7 @@ function startGame() {
                             countPoints = 4;
                         }, 3000);
                     } else {
-                        alert.textContent = "Try Again !!!";
+                        alert.textContent = "Try again...";
                         setTimeout(() => {
                             alert.textContent = "";
                         }, 1000);
@@ -200,11 +208,15 @@ function startGame() {
             /** append all to the dev container */
             div.appendChild(p);
             div.appendChild(ul);
-            div.appendChild(submit);
+            if (currentQuestionIndex < 10){
+                div.appendChild(submit);
+            }
         }
-    }
+       
+    } //end of for loop
+        
+}// end of startGame
 
-}
 
 /** clear previous data in the page */
 function clearPreviousData() {
@@ -213,6 +225,7 @@ function clearPreviousData() {
         div.removeChild(div.firstChild);
     }
 }
+
 
 /** check the answer */
 function getAnswerStatus(i, corrAnswer) {
@@ -234,6 +247,15 @@ function getAnswerStatus(i, corrAnswer) {
     }
     return ANSWER_STATUS.NO_ANSWER;
 }
-
-
-// ** when currentQuestionIndex = myQuestions.length => show result
+   // feedback
+   function feedback(totalPoints) {
+    if (totalPoints>=0 && totalPoints<=10){
+        return "You are still strangers!";
+    } else if (totalPoints>=11 && totalPoints<=20){
+        return "You know a thing or two!";
+    } else if (totalPoints>=21 && totalPoints<=35){
+        return  "You are basically friends (but not close friends)!";
+    } else if (totalPoints>=36 && totalPoints<=40){
+        return  "You are a family!";
+    }
+}
