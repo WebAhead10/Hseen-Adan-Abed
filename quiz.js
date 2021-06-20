@@ -114,9 +114,7 @@ let myQuestions = [{
     
 }
 ];
-
 function startGame() {
-
     const div = document.getElementById("questions");
     const mainDiv = document.getElementById("main");
     mainDiv.classList.add("container");
@@ -132,7 +130,6 @@ function startGame() {
             }
             const p = document.createElement("p");
             p.textContent = myQuestions[i].question;
-
             /** create the ul and the li elements with all children */
             const ul = document.createElement("ul");
             ul.classList.add("answer");
@@ -149,7 +146,6 @@ function startGame() {
                 li.appendChild(span);
                 ul.appendChild(li);
             }
-
             // create submit button
             let submit = document.createElement("button");
             submit.textContent = "SUBMIT";
@@ -159,8 +155,11 @@ function startGame() {
                 alert.textContent = "";
                 let corrAnswer = myQuestions[i].answers[myQuestions[i].correctAnswer];
                 let status = getAnswerStatus(i, corrAnswer);
+<<<<<<< HEAD
                 // if (corrAnswer)
 
+=======
+>>>>>>> 449cd79477922c40004213f6ea73f500ee9ed890
                 // please choose an answer
                 if (status === ANSWER_STATUS.NO_ANSWER) {
                     alert.textContent = "Please choose an answer";
@@ -188,7 +187,6 @@ function startGame() {
                         alert.textContent = " The correct answer is : " + myQuestions[i].answers[myQuestions[i].correctAnswer];
                         totalPoints += countPoints;
                         points.textContent = totalPoints;
-                        
                         setTimeout(() => {
                             currentQuestionIndex++;
                             alert.textContent = " ";
@@ -204,7 +202,6 @@ function startGame() {
                     }
                 }
             }
-
             /** append all to the dev container */
             div.appendChild(p);
             div.appendChild(ul);
